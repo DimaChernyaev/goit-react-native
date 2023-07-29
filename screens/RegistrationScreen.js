@@ -12,13 +12,18 @@ import {
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
+import BackgroundComponent from "../components/BackgroudComponent";
+import { useNavigation } from "@react-navigation/native";
 
 const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisable, setIsPasswordVisable] = useState(true);
+  const [isInputFocus, setIsInputFocus] = useState(null);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleSubmitForm = () => {
     if (login === "" || email === "" || password === "") {
@@ -43,73 +48,113 @@ const RegistrationScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={{
-          ...styles.wrapper,
-          paddingBottom: isKeyboardOpen ? 32 : 78,
-        }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
+      <BackgroundComponent>
+        <View
+          style={{
+            ...styles.wrapper,
+            paddingBottom: isKeyboardOpen ? 32 : 72,
+          }}
         >
-          <View style={styles.photoWrapper}>
-            <TouchableOpacity style={styles.addPhotoButton}>
-              <Image />
-              <Text style={{ color: "#FF6C00" }}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView>
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Логін"
-              value={login}
-              onChangeText={setLogin}
-              onFocus={() => setIsKeyboardOpen(true)}
-              onBlur={() => setIsKeyboardOpen(false)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Адреса електроної пошти"
-              value={email}
-              onChangeText={setEmail}
-              onFocus={() => setIsKeyboardOpen(true)}
-              onBlur={() => setIsKeyboardOpen(false)}
-            />
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="Пароль"
-                value={password}
-                onChangeText={setPassword}
-                onFocus={() => setIsKeyboardOpen(true)}
-                onBlur={() => setIsKeyboardOpen(false)}
-                secureTextEntry={isPasswordVisable}
-              />
-              <TouchableOpacity
-                style={{ position: "absolute", top: 16, right: 16 }}
-                onPress={() => setIsPasswordVisable(!isPasswordVisable)}
-              >
-                <Text>{isPasswordVisable ? "Показати" : "Приховати"}</Text>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+          >
+            <View style={styles.photoWrapper}>
+              <TouchableOpacity style={styles.addPhotoButton}>
+                <Image />
+                <Text style={{ color: "#FF6C00" }}>+</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={handleSubmitForm}>
-              <Text style={styles.buttonText}>Зареєстуватися</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
+            <ScrollView>
+              <Text style={styles.title}>Реєстрація</Text>
+              <TextInput
                 style={{
-                  ...styles.text,
+                  ...styles.input,
+                  borderColor: isInputFocus === "login" ? "#FF6C00" : "#E8E8E8",
+                }}
+                placeholder="Логін"
+                value={login}
+                onChangeText={setLogin}
+                onFocus={() => {
+                  setIsInputFocus("login");
+                  setIsKeyboardOpen(true);
+                }}
+                onBlur={() => {
+                  setIsInputFocus("");
+                  setIsKeyboardOpen(false);
+                }}
+              />
+              <TextInput
+                style={{
+                  ...styles.input,
+                  borderColor: isInputFocus === "email" ? "#FF6C00" : "#E8E8E8",
+                }}
+                placeholder="Адреса електроної пошти"
+                value={email}
+                onChangeText={setEmail}
+                onFocus={() => {
+                  setIsInputFocus("email");
+                  setIsKeyboardOpen(true);
+                }}
+                onBlur={() => {
+                  setIsInputFocus("");
+                  setIsKeyboardOpen(false);
+                }}
+              />
+              <View>
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      isInputFocus === "password" ? "#FF6C00" : "#E8E8E8",
+                  }}
+                  placeholder="Пароль"
+                  value={password}
+                  onChangeText={setPassword}
+                  onFocus={() => {
+                    setIsInputFocus("password");
+                    setIsKeyboardOpen(true);
+                  }}
+                  onBlur={() => {
+                    setIsInputFocus("");
+                    setIsKeyboardOpen(false);
+                  }}
+                  secureTextEntry={isPasswordVisable}
+                />
+                <TouchableOpacity
+                  style={{ position: "absolute", top: 16, right: 16 }}
+                  onPress={() => setIsPasswordVisable(!isPasswordVisable)}
+                >
+                  <Text>{isPasswordVisable ? "Показати" : "Приховати"}</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleSubmitForm}
+              >
+                <Text style={styles.buttonText}>Зареєстуватися</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  ...styles.textContainer,
                   display: isKeyboardOpen ? "none" : "flex",
                 }}
               >
-                Вже є акаунт? Увійти
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+                <Text style={styles.text}>Вже є акаунт?</Text>
+                <Text
+                  style={{
+                    ...styles.text,
+                    textDecorationLine: "underline",
+                  }}
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  Увійти
+                </Text>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </View>
+      </BackgroundComponent>
     </TouchableWithoutFeedback>
   );
 };
@@ -190,12 +235,14 @@ const styles = StyleSheet.create({
     right: -12,
   },
   text: {
-    color: "#1B4371",
-    textAlign: "center",
-    marginTop: 16,
     fontFamily: "Roboto-Regular",
+    color: "#1B4371",
+    marginTop: 16,
   },
-  container: {
-    flex: 1,
+  textContainer: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

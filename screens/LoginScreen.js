@@ -12,12 +12,17 @@ import {
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
+import BackgroundComponent from "../components/BackgroudComponent";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [isInputFocus, setIsInputFocus] = useState(null);
   const [isPasswordVisable, setIsPasswordVisable] = useState(true);
+
+  const navigation = useNavigation();
 
   const handleSubmitForm = () => {
     if (email === "" || password === "") {
@@ -39,61 +44,89 @@ const LoginScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={{
-          ...styles.wrapper,
-          paddingBottom: isKeyboardOpen ? 32 : 144,
-        }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
+      <BackgroundComponent>
+        <View
+          style={{
+            ...styles.wrapper,
+            paddingBottom: isKeyboardOpen ? 32 : 144,
+          }}
         >
-          <ScrollView>
-            <Text style={styles.title}>Увійти</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Адреса електроної пошти"
-              value={email}
-              onChangeText={setEmail}
-              onFocus={() => setIsKeyboardOpen(true)}
-              onBlur={() => setIsKeyboardOpen(false)}
-            />
-            <View>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+          >
+            <ScrollView>
+              <Text style={styles.title}>Увійти</Text>
               <TextInput
-                style={styles.input}
-                placeholder="Пароль"
-                value={password}
-                onChangeText={setPassword}
-                onFocus={() => setIsKeyboardOpen(true)}
-                onBlur={() => setIsKeyboardOpen(false)}
-                secureTextEntry={isPasswordVisable}
-              />
-              <TouchableOpacity
-                style={{ position: "absolute", top: 16, right: 16 }}
-                onPress={() => setIsPasswordVisable(!isPasswordVisable)}
-              >
-                <Text>{isPasswordVisable ? "Показати" : "Приховати"}</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText} onPress={handleSubmitForm}>
-                Увійти
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
                 style={{
-                  ...styles.text,
+                  ...styles.input,
+                  borderColor: isInputFocus === "email" ? "#FF6C00" : "#E8E8E8",
+                }}
+                placeholder="Адреса електроної пошти"
+                value={email}
+                onChangeText={setEmail}
+                onFocus={() => {
+                  setIsInputFocus("email");
+                  setIsKeyboardOpen(true);
+                }}
+                onBlur={() => {
+                  setIsInputFocus("");
+                  setIsKeyboardOpen(false);
+                }}
+              />
+              <View>
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      isInputFocus === "password" ? "#FF6C00" : "#E8E8E8",
+                  }}
+                  placeholder="Пароль"
+                  value={password}
+                  onChangeText={setPassword}
+                  onFocus={() => {
+                    setIsInputFocus("password");
+                    setIsKeyboardOpen(true);
+                  }}
+                  onBlur={() => {
+                    setIsInputFocus("");
+                    setIsKeyboardOpen(false);
+                  }}
+                  secureTextEntry={isPasswordVisable}
+                />
+                <TouchableOpacity
+                  style={{ position: "absolute", top: 16, right: 16 }}
+                  onPress={() => setIsPasswordVisable(!isPasswordVisable)}
+                >
+                  <Text>{isPasswordVisable ? "Показати" : "Приховати"}</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText} onPress={handleSubmitForm}>
+                  Увійти
+                </Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  ...styles.textContainer,
                   display: isKeyboardOpen ? "none" : "flex",
                 }}
               >
-                Немає акаунту? Зареєструватися
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+                <Text style={styles.text}>Немає акаунту?</Text>
+                <Text
+                  style={{
+                    ...styles.text,
+                    textDecorationLine: "underline",
+                  }}
+                  onPress={() => navigation.navigate("RegistrationScreen")}
+                >
+                  Зареєструватися
+                </Text>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </View>
+      </BackgroundComponent>
     </TouchableWithoutFeedback>
   );
 };
@@ -125,7 +158,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#E8E8E8",
     width: "100%",
     height: 50,
     marginBottom: 16,
@@ -152,7 +184,12 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Roboto-Regular",
     color: "#1B4371",
-    textAlign: "center",
     marginTop: 16,
+  },
+  textContainer: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
