@@ -70,7 +70,7 @@ const LoginScreen = () => {
                   setIsKeyboardOpen(true);
                 }}
                 onBlur={() => {
-                  setIsInputFocus("");
+                  setIsInputFocus(null);
                   setIsKeyboardOpen(false);
                 }}
               />
@@ -89,7 +89,7 @@ const LoginScreen = () => {
                     setIsKeyboardOpen(true);
                   }}
                   onBlur={() => {
-                    setIsInputFocus("");
+                    setIsInputFocus(null);
                     setIsKeyboardOpen(false);
                   }}
                   secureTextEntry={isPasswordVisable}

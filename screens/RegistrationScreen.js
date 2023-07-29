@@ -80,7 +80,7 @@ const RegistrationScreen = () => {
                   setIsKeyboardOpen(true);
                 }}
                 onBlur={() => {
-                  setIsInputFocus("");
+                  setIsInputFocus(null);
                   setIsKeyboardOpen(false);
                 }}
               />
@@ -97,7 +97,7 @@ const RegistrationScreen = () => {
                   setIsKeyboardOpen(true);
                 }}
                 onBlur={() => {
-                  setIsInputFocus("");
+                  setIsInputFocus(null);
                   setIsKeyboardOpen(false);
                 }}
               />
@@ -116,7 +116,7 @@ const RegistrationScreen = () => {
                     setIsKeyboardOpen(true);
                   }}
                   onBlur={() => {
-                    setIsInputFocus("");
+                    setIsInputFocus(null);
                     setIsKeyboardOpen(false);
                   }}
                   secureTextEntry={isPasswordVisable}
