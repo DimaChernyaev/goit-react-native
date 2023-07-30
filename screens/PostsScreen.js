@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
-const CreatePostsScreen = () => {
+const PostsScreen = () => {
   return <Text>CreatePosyScreen</Text>;
 };
 
-export default CreatePostsScreen;
+export default PostsScreen;

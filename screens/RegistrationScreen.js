@@ -43,7 +43,9 @@ const RegistrationScreen = () => {
     setEmail("");
     setLogin("");
     setPassword("");
-    return user;
+
+    navigation.navigate("Home");
+    return;
   };
 
   return (

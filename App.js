@@ -23,28 +23,7 @@ const App = () => {
           component={RegistrationScreen}
         />
         <Routes.Screen name="LoginScreen" component={LoginScreen} />
-        <Routes.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: "Home screen",
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 20,
-            },
-            headerRight: () => (
-              <Button
-                onPress={() => alert("This is a button!")}
-                title="Press me"
-                color="#fff"
-              />
-            ),
-          }}
-        />
+        <Routes.Screen name="Home" component={Home} />
       </Routes.Navigator>
       <Toast />
     </NavigationContainer>
