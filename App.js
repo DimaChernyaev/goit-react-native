@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Routes.Navigator initialRouteName="LoginScreen">
+      <Routes.Navigator initialRouteName="Home">
         <Routes.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
