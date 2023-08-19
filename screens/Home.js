@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CreatePostsScreen from "./CreatePostsScreen";
 import PostsScreen from "./PostsScreen";
 import ProfileScreen from "./ProfileScreen";
-import { SvgUri } from "react-native-svg";
 
 const Home = () => {
   const Tabs = createBottomTabNavigator();
@@ -21,11 +20,6 @@ const Home = () => {
                     focused ? styles.focusedIconWrapper : styles.iconWrapper
                   }
                 >
-                  <SvgUri
-                    width="20"
-                    height="20"
-                    uri={require("../assets/images/Grid.svg")}
-                  />
                 </View>
               );
             } else if (route.name === "CreatePosts") {
@@ -35,11 +29,6 @@ const Home = () => {
                     focused ? styles.focusedIconWrapper : styles.iconWrapper
                   }
                 >
-                  <SvgUri
-                    width="20"
-                    height="20"
-                    uri={require("../assets/images/Union.svg")}
-                  />
                 </View>
               );
             } else if (route.name === "Profile") {
@@ -49,11 +38,6 @@ const Home = () => {
                     focused ? styles.focusedIconWrapper : styles.iconWrapper
                   }
                 >
-                  <SvgUri
-                    width="20"
-                    height="20"
-                    uri={require("../assets/images/User.svg")}
-                  />
                 </View>
               );
             }
